@@ -33,6 +33,6 @@ int main(){
 	//Test sortedArraysCommonElements
 	/*struct transaction A[3] = { { 10, "09-10-2003", "First" }, { 20, "19-10-2004", "Second" }, { 30, "03-03-2005", "Third" } };
 	struct transaction B[3] = { { 20, "19-10-2004", "Second" }, { 30, "03-03-2005", "Third" }, { 60, "22-04-2006", "Sixth" } };
-	struct transaction *result = mergeSortedArrays(A, 3, B, 3);*/
-	return 0;
+	struct transaction *result = mergeSortedArrays(A, 3, B, 3); */
+		return 0;
 }

@@ -17,7 +17,7 @@ NOTES:
 #include <iostream>
 #include<string.h>
 
-long int convert(char *);
+ int convert(char *,int);
 
 struct transaction {
 	int amount;
@@ -29,28 +29,47 @@ struct transaction * mergeSortedArrays(struct transaction *A, int ALen, struct t
 	struct transaction *p[10];
 	if (A == NULL||B == NULL)
 		return NULL;
-	int i=0,j=0,k=0;
-	long int date1, date2;
+	int i = 0, j = 0, k = 0, dt1, dt2, mn1, mn2, yr1, yr2;
+	 
 	while (i < ALen&&j < BLen)
 	{
-		date1 = convert((A + i)->date);
-		date2 = convert((B + i)->date);
-		if (date1 < date2)
+		dt1 = convert(&((A + i)->date[0]), 2);
+		dt2 = convert(&((B + j)->date[0]), 2);
+		mn1 = convert(&((A + i)->date[3]), 2);
+		mn2 = convert(&((B + j)->date[3]), 2);
+		yr1 = convert(&((A + i)->date[6]), 4);
+		yr2 = convert(&((B + j)->date[6]), 4);
+		if (yr1 < yr2)
 		{
 			p[k++] = A + i;
 			i++;
 		}
-		else if (date2< date1)
+		else if (yr2 < yr1)
 		{
 			p[k++] = B + j;
 			j++;
 		}
-		else
+		else if (mn1 < mn2)
 		{
 			p[k++] = A + i;
 			i++;
+		}
+		else if (mn2 < mn1)
+		{
+			p[k++] = B + j;
 			j++;
 		}
+		else if (dt1 <= dt2)
+		{
+			p[k++] = A + i;
+			i++;
+		}
+		else
+		{
+			p[k++] = B + j;
+			j++;
+		}
+		
 	}
 	if (i<ALen)
 		while (i < ALen)
@@ -66,20 +85,17 @@ struct transaction * mergeSortedArrays(struct transaction *A, int ALen, struct t
 		}
 	for (i = 0; i < ALen + BLen; i++)
 	{
+		
 		(A + i)->amount = p[i]->amount;
 		strcpy((A + i)->date, p[i]->date);
 		strcpy((A + i)->description, p[i]->description);
 	}
 	
 }
-long int convert(char *s)
+int convert(char *s,int l)
 {
-	int i;
-	long int t;
-	for (i = 0, t = 0; s[i]; i++)
-	{
-		if (i != 3 && i != 5)
+	int i, t;
+	for (i = 0, t = 0; i<l; i++)
 			t = t * 10 + (s[i] - '0');
-	}
 	return t;
 }
