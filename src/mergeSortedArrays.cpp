@@ -17,80 +17,57 @@ NOTES:
 #include <iostream>
 #include<string.h>
 
- int convert(char *,int);
+int convert(char *,int);
 
 struct transaction {
 	int amount;
 	char date[11];
 	char description[20];
-};
+}p[10];
 
 struct transaction * mergeSortedArrays(struct transaction *A, int ALen, struct transaction *B, int BLen) {
-	struct transaction *p[10];
 	if (A == NULL||B == NULL)
 		return NULL;
-	int i = 0, j = 0, k = 0, dt1, dt2, mn1, mn2, yr1, yr2;
-	 
+	int i = 0, j = 0, k = 0;
 	while (i < ALen&&j < BLen)
 	{
-		dt1 = convert(&((A + i)->date[0]), 2);
-		dt2 = convert(&((B + j)->date[0]), 2);
-		mn1 = convert(&((A + i)->date[3]), 2);
-		mn2 = convert(&((B + j)->date[3]), 2);
-		yr1 = convert(&((A + i)->date[6]), 4);
-		yr2 = convert(&((B + j)->date[6]), 4);
-		if (yr1 < yr2)
+		if ((A + i)->amount <= (B + j)->amount)
 		{
-			p[k++] = A + i;
+			(p + k)->amount = (A + i)->amount;
+			strcpy((p + k)->date, (A + i)->date);
+			strcpy((p + k)->description, (A + i)->description);
 			i++;
 		}
-		else if (yr2 < yr1)
+		else if ((B + j)->amount<(A+i)->amount)
 		{
-			p[k++] = B + j;
+			(p + k)->amount = (B + j)->amount;
+			strcpy((p + k)->date, (B + j)->date);
+			strcpy((p + k)->description, (B + j)->description);
 			j++;
+		
 		}
-		else if (mn1 < mn2)
-		{
-			p[k++] = A + i;
-			i++;
-		}
-		else if (mn2 < mn1)
-		{
-			p[k++] = B + j;
-			j++;
-		}
-		else if (dt1 <= dt2)
-		{
-			p[k++] = A + i;
-			i++;
-		}
-		else
-		{
-			p[k++] = B + j;
-			j++;
+		k++;
 		}
 		
-	}
 	if (i<ALen)
 		while (i < ALen)
 		{
-			p[k++] = A + i;
+			(p + k)->amount = (A + i)->amount;
+			strcpy((p + k)->date, (A + i)->date);
+			strcpy((p + k)->description, (A + i)->description);
 			i++;
+			k++;
 		}
 	else
 		while (j < BLen)
 		{
-			p[k++] = B + j;
+			(p + k)->amount = (B + j)->amount;
+			strcpy((p + k)->date, (B + j)->date);
+			strcpy((p + k)->description, (B + j)->description);
 			j++;
+			k++;
 		}
-	for (i = 0; i < ALen + BLen; i++)
-	{
-		
-		(A + i)->amount = p[i]->amount;
-		strcpy((A + i)->date, p[i]->date);
-		strcpy((A + i)->description, p[i]->description);
-	}
-	
+	return p;
 }
 int convert(char *s,int l)
 {
